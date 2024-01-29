@@ -1,7 +1,7 @@
 # Script qui permet d'enovyer l'uptime et l'occupation des disques durs à home assistant à travers MQTT.
 
 hname=`hostname`
-mosquitto_host="localhost"
+mosquitto_host="192.168.1.60"
 HAPrefix="homeassistant"
 
 chname=${hname/-/_}
