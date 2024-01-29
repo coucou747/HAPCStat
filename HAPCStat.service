@@ -1,0 +1,11 @@
+[Unit]
+Description=Home Assistant Stats
+After=network.target
+
+[Service]
+WorkingDirectory=/home/maxime/homeAssistant/HAPCStat
+ExecStart=/home/maxime/homeAssistant/HAPCStat/run.sh
+User=maxime
+
+[Install]
+WantedBy=timers.target
