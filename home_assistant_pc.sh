@@ -1,4 +1,5 @@
 # Script qui permet d'enovyer l'uptime et l'occupation des disques durs à home assistant à travers MQTT.
+# apt-get install mosquitto-clients
 
 hname=`hostname`
 mosquitto_host="192.168.1.60"
@@ -29,7 +30,7 @@ function harddriveLine () {
   "name":"$1 total",
   "uniq_id":"${chname}${disksmallname}_total",
   "object_id":"$chname",
-  "expire_after":120,
+  "expire_after":1200,
   "device_class":"data_size",
   "val_tpl":"{{value_json['${disksmallname}total']}}",
   "unit_of_meas":"GB",
@@ -42,7 +43,7 @@ EOF
   "name":"$1 used",
   "uniq_id":"${chname}${disksmallname}_used",
   "object_id":"$chname",
-  "expire_after":120,
+  "expire_after":1200,
   "device_class":"data_size",
   "val_tpl":"{{value_json['${disksmallname}used']}}",
   "unit_of_meas":"GB",
@@ -55,7 +56,7 @@ EOF
   "name":"$1 percent used",
   "uniq_id":"${chname}${disksmallname}_usedP",
   "object_id":"$chname",
-  "expire_after":120,
+  "expire_after":1200,
   "device_class":"data_size",
   "val_tpl":"{{value_json['${disksmallname}usedPercent']}}",
   "unit_of_meas":"%",
@@ -75,6 +76,7 @@ IFS='' read -r -d '' json <<EOF
   "uniq_id":"${chname}_uptime",
   "object_id":"$chname",
   "device_class":"duration",
+  "expire_after":1200,
   "val_tpl":"{{value_json['uptime']}}",
   "unit_of_meas":"s",
   "state_topic":"$state_topic",

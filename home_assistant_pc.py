@@ -1,4 +1,8 @@
 # script qui exporte le résultat de la commande sensors vers home assistant à travers MQTT
+#
+# apt-get install lm-sensors
+# pip install paho-mqtt
+
 
 # Config
 
@@ -36,7 +40,7 @@ def HandleComponent(k, k2, value, device_class, unit):
         "name":k + " " + k2,
         "uniq_id":chname+h,
         "object_id":chname,
-        "expire_after":120,
+        "expire_after":1200,
         "device_class":device_class,
         "val_tpl":"{{value_json['"+k+"']['"+k2+"']}}",
         "unit_of_meas":unit,
