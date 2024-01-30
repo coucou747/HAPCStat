@@ -63,7 +63,7 @@ EOF
   "state_topic":"$state_topic",
   "device":$json_device}
 EOF
-  mosquitto_pub -r -h "$mosquitto_host" -t "$HAPrefix/sensor/${chname}${disksmallname}_used/config" -m "$json"
+  mosquitto_pub -r -h "$mosquitto_host" -t "$HAPrefix/sensor/${chname}${disksmallname}_usedP/config" -m "$json"
 
   echo "  \"${disksmallname}total\":\"${3%?}\","
   echo "  \"${disksmallname}used\":\"${used%?}\","
