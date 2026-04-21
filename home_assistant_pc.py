@@ -28,7 +28,7 @@ json_device = {
 state_topic=HAPrefix+"/sensor/"+chname+"/statePy"
 print(state_topic)
 
-client = mqtt_client.Client(hname)
+client = mqtt_client.Client(mqtt_client.CallbackAPIVersion.VERSION2, client_id=hname)
 #client.on_connect = on_connect
 client.connect(mosquitto_host)
 client.loop_start()
@@ -48,7 +48,7 @@ def HandleComponent(k, k2, value, device_class, unit):
         "device":json_device}
     client.publish(HAPrefix + "/sensor/"+chname+"_"+h+"/config", json.dumps(j, indent=4))
     print(device_class+" "+h)
-    client.loop(timeout=1, max_packets=1)
+    client.loop(timeout=1)
 
 json_out = dict()
 for subcomponent in j.keys():
@@ -66,4 +66,4 @@ for subcomponent in j.keys():
 client.publish(state_topic, json.dumps(json_out, indent=4))
 print(json.dumps(json_out, indent=4))
 
-client.loop(timeout=10, max_packets=10)
+client.loop(timeout=10)
