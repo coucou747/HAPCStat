@@ -86,6 +86,29 @@ EOF
 mosquitto_pub -r -h "$mosquitto_host" -t "$HAPrefix/sensor/${hname}_uptime/config" -m "$json"
 
 json_state=""
+
+if [ -e "services.txt" ]; then
+while IFS= read -r SERVICE; do
+IFS='' read -r -d '' json <<EOF
+{
+  "name":"${SERVICE}",
+  "uniq_id":"${chname}_${SERVICE}_state",
+  "object_id":"${chname}_${SERVICE}_state",
+  "val_tpl":"{{value_json['${SERVICE}']}}",
+  "device_class":"enum",
+  "options":["active","inactive","failed","activating","deactivating","unknown"],
+  "expire_after":1200,
+  "state_topic":"$state_topic",
+  "device":$json_device,
+  "entity_category":"diagnostic"
+}
+EOF
+state=$(systemctl is-active ${SERVICE}.service)
+json_state="\"${SERVICE}\":\"$state\", $json_state"
+mosquitto_pub -r -h "$mosquitto_host" -t "$HAPrefix/sensor/${hname}_${SERVICE}_state/config" -m "$json"
+done < services.txt
+fi
+
 IFS="
 "
 
@@ -101,5 +124,6 @@ json_state="{
 $json_state  \"uptime\":$uptime
 }
 "
+
 
 mosquitto_pub -h "$mosquitto_host" -t "$state_topic" -m "$json_state"
